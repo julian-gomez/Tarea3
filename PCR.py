@@ -19,7 +19,19 @@ for i in range(numeroCol):
 vectorPromedio = np.zeros(numeroCol)
 for i in range(numeroCol):
 	vectorPromedio[i] = datosModificados[:,i].sum()/numeroFil
-print vectorPromedio[26] - datosModificados[:,26].mean()
+#Crearemos una nueva matriz con la diferencia de los promedios
+matrizNueva = np.zeros((numeroFil, numeroCol))
+for i in range(numeroCol):
+	matrizNueva[:,i] = datosModificados[:,i] - vectorPromedio[i]
+matrizCovarianza = np.zeros((numeroCol,numeroCol))
+
+for i in range(numeroCol):
+	for j in range(numeroCol):
+		a = (matrizNueva[:,i]*matrizNueva[:,j]).sum()/(numeroFil-1)
+		print a
+		matrizCovarianza[i,j] = a
+print np.cov(matrizNueva)
+
 
 
 
