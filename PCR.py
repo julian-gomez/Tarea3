@@ -27,11 +27,26 @@ matrizCovarianza = np.zeros((numeroCol,numeroCol))
 
 for i in range(numeroCol):
 	for j in range(numeroCol):
-		a = (matrizNueva[:,i]*matrizNueva[:,j]).sum()/(numeroFil-1)
-		print a
+		a = ((matrizNueva[:,i]*matrizNueva[:,j]).sum())/(numeroFil-1)
 		matrizCovarianza[i,j] = a
-print np.cov(matrizNueva)
+#Imprimimos la matriz de Covarianza
+print matrizCovarianza
+print "### Separador ###"
+#Ahora, comparamos con la funcion de numpy
+print matrizCovarianza - np.cov(matrizNueva.T)
+print "### Separador ###"
 
+#Ahora, vamos a calcular los valores y vetores propios
 
+valoresPropios = np.linalg.eigvals(matrizCovarianza)
+vectoresPropios = np.linalg.eig(matrizCovarianza)[1]
 
+for i in range(len(valoresPropios)):
+	print "Valor propio ", valoresPropios[i], " Con vector propio ", vectoresPropios[i]
+#Ahora, usando como referencia el archivo del siguiente link: www.cs.otago.ac.nz/cosc453/student_tutorials/principal_components.pdf podemos realizar los siguientes puntos. Notese que la funcion eigvalues imprime los valores propios de mayor a menor, por tanto usamos esots vectores propios como PC1 y PC2 respectivamente.
+
+print "### Separador ###"
+
+print "PC1: ", vectoresPropios[0]
+print "PC2: ", vectoresPropios[1]
 
