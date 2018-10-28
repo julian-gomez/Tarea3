@@ -43,10 +43,74 @@ vectoresPropios = np.linalg.eig(matrizCovarianza)[1]
 
 for i in range(len(valoresPropios)):
 	print "Valor propio ", valoresPropios[i], " Con vector propio ", vectoresPropios[i]
-#Ahora, usando como referencia el archivo del siguiente link: www.cs.otago.ac.nz/cosc453/student_tutorials/principal_components.pdf podemos realizar los siguientes puntos. Notese que la funcion eigvalues imprime los valores propios de mayor a menor, por tanto usamos esots vectores propios como PC1 y PC2 respectivamente.
+#Ahora, usando como referencia el archivo del siguiente link: www.cs.otago.ac.nz/cosc453/student_tutorials/principal_components.pdf podemos realizar los siguientes puntos. Notese que la funcion eigvalues imprime los valores propios de mayor a menor, por tanto usamos estos vectores propios como PC1 y PC2 respectivamente.
 
 print "### Separador ###"
-
 print "PC1: ", vectoresPropios[0]
 print "PC2: ", vectoresPropios[1]
+print "### Separador ###"
+
+#Creamos una matriz con estos vectores
+matrizVectoresPCA = np.zeros((numeroCol,2))
+matrizVectoresPCA[:,0] = vectoresPropios[0]
+matrizVectoresPCA[:,1] = vectoresPropios[1]
+
+#Ahora, vamos a separar en 2 matrices los datos con M y los datos con B. Usaremos de nuevo la matriz datos modificados (M = 0 y B = 1)
+
+numeroM = 0
+numeroB = 0
+
+for i in range(numeroFil):
+	if(datosModificados[i,1] == 0.0):
+		numeroM += 1
+	elif(datosModificados[i,1] == 1.0):
+		numeroB += 1
+matrizPacientesM = np.zeros((numeroM, numeroCol))
+matrizPacientesB = np.zeros((numeroB, numeroCol))
+
+
+for i in range(numeroM):
+	if(datosModificados[i,1] == 0.0):
+		matrizPacientesM[i,:] = datosModificados[i,:]
+for i in range(numeroB):
+	if(datosModificados[i,1] == 1.0):
+		matrizPacientesB[i,:] = datosModificados[i,:]
+
+#Ahora, haremos el producto entre cada fila de nuestras nuevas matrices y la matriz de vectores propios definida antes
+
+matriz_2X2M = np.zeros((numeroM,2))
+matriz_2X2B = np.zeros((numeroB,2))
+
+for i in range(numeroM):
+	matriz_2X2M[i,:] = matrizPacientesM[i,:].dot(matrizVectoresPCA)
+for i in range(numeroB):
+	matriz_2X2B[i,:] = matrizPacientesB[i,:].dot(matrizVectoresPCA)
+
+plt.figure()
+
+plt.scatter(matriz_2X2M[:,0], matriz_2X2M[:,1], label = "M")
+plt.scatter(matriz_2X2B[:,0], matriz_2X2B[:,1], label = "B")
+plt.legend()
+plt.savefig("CalderonJulian_PCA.pdf")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
