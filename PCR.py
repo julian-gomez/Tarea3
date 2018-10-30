@@ -15,26 +15,27 @@ datosModificados = np.empty((numeroFil,numeroCol))
 for i in range(numeroCol):
 	for j in range(numeroFil):
 		datosModificados[j,i] = float(datos[j,i])
-#Con los datos obtenidos, procedemos al ejercicio PCR. Creemos un vector de promedios para cada columna
-vectorPromedio = np.zeros(numeroCol)
-for i in range(numeroCol):
-	vectorPromedio[i] = datosModificados[:,i].sum()/numeroFil
+#Con los datos obtenidos, procedemos al ejercicio PCA. Creemos un vector de promedios para cada columna (Exceptuando las dos primeras)
+vectorPromedio = np.zeros(numeroCol - 2)
+for i in range(numeroCol -2):
+	vectorPromedio[i] = datosModificados[:,i + 2].sum()/numeroFil
 #Crearemos una nueva matriz con la diferencia de los promedios
-matrizNueva = np.zeros((numeroFil, numeroCol))
-for i in range(numeroCol):
-	matrizNueva[:,i] = datosModificados[:,i] - vectorPromedio[i]
-matrizCovarianza = np.zeros((numeroCol,numeroCol))
+matrizNueva = np.zeros((numeroFil, numeroCol - 2))
+for i in range(numeroCol - 2):
+	matrizNueva[:,i] = datosModificados[:,i + 2] - vectorPromedio[i]
+matrizCovarianza = np.zeros((numeroCol - 2,numeroCol - 2))
 
-for i in range(numeroCol):
-	for j in range(numeroCol):
+for i in range(numeroCol - 2):
+	for j in range(numeroCol - 2):
 		a = ((matrizNueva[:,i]*matrizNueva[:,j]).sum())/(numeroFil-1)
 		matrizCovarianza[i,j] = a
 #Imprimimos la matriz de Covarianza
 print matrizCovarianza
 print "### Separador ###"
+"""
 #Ahora, comparamos con la funcion de numpy
 print matrizCovarianza - np.cov(matrizNueva.T)
-print "### Separador ###"
+print "### Separador ###" """
 
 #Ahora, vamos a calcular los valores y vetores propios
 
@@ -51,7 +52,7 @@ print "PC2: ", vectoresPropios[1]
 print "### Separador ###"
 
 #Creamos una matriz con estos vectores
-matrizVectoresPCA = np.zeros((numeroCol,2))
+matrizVectoresPCA = np.zeros((numeroCol - 2,2))
 matrizVectoresPCA[:,0] = vectoresPropios[0]
 matrizVectoresPCA[:,1] = vectoresPropios[1]
 
@@ -65,16 +66,16 @@ for i in range(numeroFil):
 		numeroM += 1
 	elif(datosModificados[i,1] == 1.0):
 		numeroB += 1
-matrizPacientesM = np.zeros((numeroM, numeroCol))
-matrizPacientesB = np.zeros((numeroB, numeroCol))
+matrizPacientesM = np.zeros((numeroM, numeroCol - 2))
+matrizPacientesB = np.zeros((numeroB, numeroCol - 2))
 
 
 for i in range(numeroM):
 	if(datosModificados[i,1] == 0.0):
-		matrizPacientesM[i,:] = datosModificados[i,:]
+		matrizPacientesM[i,:] = datosModificados[i,2:numeroCol]
 for i in range(numeroB):
 	if(datosModificados[i,1] == 1.0):
-		matrizPacientesB[i,:] = datosModificados[i,:]
+		matrizPacientesB[i,:] = datosModificados[i,2:numeroCol]
 
 #Ahora, haremos el producto entre cada fila de nuestras nuevas matrices y la matriz de vectores propios definida antes
 
