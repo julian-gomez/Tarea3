@@ -89,25 +89,12 @@ for i in range(numeroB):
 
 plt.figure()
 
-plt.scatter(matriz_2X2M[:,0], matriz_2X2M[:,1], label = "M")
-plt.scatter(matriz_2X2B[:,0], matriz_2X2B[:,1], label = "B")
+plt.scatter(matriz_2X2M[:,0], matriz_2X2M[:,1], label = "M", c = "b")
+plt.scatter(matriz_2X2B[:,0], matriz_2X2B[:,1], label = "B", c = "r")
 plt.legend()
 plt.savefig("CalderonJulian_PCA.pdf")
 
 print "Observando la grafica, el metodo de PCA parece bastante util en separar el conjunto de malignos respecto al de benignos, mostrando una tendencia a agrupar los malignos en una region menor que los benignos. Con esta separacion es posible desarrollar un estudio mas objetivo sobre los pacientes. Existe alguna medicion que sobresale en un conjunto mas que el otro."
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
